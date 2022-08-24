@@ -1,4 +1,4 @@
-pragma solidity ^0.4.4;
+pragma solidity ^0.5.16;
 
 contract SlotMachine {
 
@@ -17,12 +17,12 @@ contract SlotMachine {
         _;
     }
 
-    function SlotMachine() {
+    constructor() public {
         owner = msg.sender;
     }
 
     //the user plays one roll of the machine putting in money for the win
-    function oneRoll() payable {
+    function oneRoll() public payable {
         require(msg.value >= coinPrice);
 
         uint rand1 = randomGen(msg.value);
@@ -31,17 +31,17 @@ contract SlotMachine {
 
         uint result = calculatePrize(rand1, rand2, rand3);
 
-        Rolled(msg.sender, rand1, rand2, rand3);
+        emit Rolled(msg.sender, rand1, rand2, rand3);
 
         pendingWithdrawals[msg.sender] += result;
         
     }
     
-    function contractBalance() constant returns(uint) {
-        return this.balance;
+    function contractBalance() public view returns(uint) {
+        return address(this).balance;
     }
 
-    function calculatePrize(uint rand1, uint rand2, uint rand3) constant returns(uint) {
+    function calculatePrize(uint rand1, uint rand2, uint rand3) public view returns(uint) {
         if(rand1 == 5 && rand2 == 5 && rand3 == 5) {
             return coinPrice * 30;
         } else if (rand1 == 6 && rand2 == 5 && rand3 == 6) {
@@ -61,7 +61,7 @@ contract SlotMachine {
         }
     }
 
-    function withdraw() {
+    function withdraw() public {
         uint amount = pendingWithdrawals[msg.sender];
 
         pendingWithdrawals[msg.sender] = 0;
@@ -69,23 +69,23 @@ contract SlotMachine {
         msg.sender.transfer(amount);
     }
 
-    function balanceOf(address user) constant returns(uint) {
+    function balanceOf(address user) public view returns(uint) {
         return pendingWithdrawals[user];
     }
 
-    function setCoinPrice(uint _coinPrice) onlyOwner {
+    function setCoinPrice(uint _coinPrice) public onlyOwner {
         coinPrice = _coinPrice;
     }
 
-    function() onlyOwner payable {
+    function() onlyOwner external payable {
     }
 
-    function cashout(uint _amount) onlyOwner {
+    function cashout(uint _amount) public onlyOwner {
         msg.sender.transfer(_amount);
     }
 
-    function randomGen(uint seed) private constant returns (uint randomNumber) {
-        return (uint(sha3(block.blockhash(block.number-1), seed )) % 6) + 1;
+    function randomGen(uint seed) private view returns (uint randomNumber) {
+        return (uint(keccak256(abi.encodePacked(blockhash(block.number-1), seed ))) % 6) + 1;
     }
 
 }

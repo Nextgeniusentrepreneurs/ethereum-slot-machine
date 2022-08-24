@@ -1,7 +1,7 @@
 {
   "name": "ethereum-slot-machine",
   "version": "1.0.0",
-  "description": "基于以太坊的水果机游戏",
+  "description": "ETH Slot Game",
   "main": "truffle-config.js",
   "scripts": {
     "dev": "lite-server",
