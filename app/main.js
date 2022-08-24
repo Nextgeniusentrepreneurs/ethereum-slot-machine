@@ -24,7 +24,7 @@ App = {
       web3 = new Web3(web3.currentProvider);
     } else {
       // set the provider you want from Web3.providers
-      App.web3Provider = new Web3.providers.HttpProvider('http://localhost:8545');
+      App.web3Provider = new Web3.providers.HttpProvider('https://ropsten.infura.io/v3/772ec28487ec49a4911ef9d8ff960564');
       web3 = new Web3(App.web3Provider);
       toastr.warning('You need MetaMask extension or Parity to use this app.');
 

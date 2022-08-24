@@ -19,6 +19,10 @@
   },
   "homepage": "https://github.com/ns2250225/ethereum-slot-machine#readme",
   "dependencies": {
-    "lite-server": "^2.3.0"
+    "lite-server": "^2.3.0",
+    "truffle-hdwallet-provider": "^1.0.17"
+  },
+  "devDependencies": {
+    "@truffle/hdwallet-provider": "^2.0.14"
   }
 }
